@@ -17,7 +17,7 @@ class Plot(object):
         self.dataH = None
         self.data = None
         self._garbageList = []
-        self.plotformats = ['pdf','png']
+        self.plotformats = ['pdf','png','C']
         self.savelog = False
         self.ratiorange = (0.46,1.54)
 
@@ -93,18 +93,18 @@ class Plot(object):
 
         #holds the main plot
         c.cd()
-        p1 = ROOT.TPad('p1','p1',0.0,0.85,1.0,0.0)
+        p1 = ROOT.TPad('p1','p1',0.01,0.15,0.99,0.99)
         p1.Draw()
         p1.SetRightMargin(0.05)
         p1.SetLeftMargin(0.12)
-        p1.SetTopMargin(0.01)
-        p1.SetBottomMargin(0.12)
+        p1.SetTopMargin(0.08)
+        p1.SetBottomMargin(0.0)
         p1.SetGridx(True)
         self._garbageList.append(p1)
         p1.cd()
 
         # legend
-        leg = ROOT.TLegend(0.45, 0.875-0.02*max(len(self.mc)-2,0), 0.98, 0.925)        
+        leg = ROOT.TLegend(0.45, 0.875-0.02*max(len(self.mc)-2,0)-0.025, 0.98, 0.9)        
         leg.SetBorderSize(0)
         leg.SetFillStyle(0)
         leg.SetTextFont(43)
@@ -169,12 +169,12 @@ class Plot(object):
 
         #holds the ratio
         c.cd()
-        p2 = ROOT.TPad('p2','p2',0.0,0.85,1.0,1.0)
+        p2 = ROOT.TPad('p2','p2',0.01,0.01,0.99,0.15)
         p2.Draw()
-        p2.SetBottomMargin(0.01)
+        p2.SetBottomMargin(0.3)
         p2.SetRightMargin(0.05)
         p2.SetLeftMargin(0.12)
-        p2.SetTopMargin(0.05)
+        p2.SetTopMargin(0.0)
         p2.SetGridx(True)
         p2.SetGridy(True)
         self._garbageList.append(p2)
@@ -187,9 +187,9 @@ class Plot(object):
         ratioframe.GetYaxis().SetLabelSize(0.18)        
         ratioframe.GetYaxis().SetTitleSize(0.2)
         ratioframe.GetYaxis().SetTitleOffset(0.2)
-        ratioframe.GetXaxis().SetLabelSize(0)
-        ratioframe.GetXaxis().SetTitleSize(0)
-        ratioframe.GetXaxis().SetTitleOffset(0)
+        ratioframe.GetXaxis().SetTitleOffset(0.7)
+        ratioframe.GetXaxis().SetTitleSize(0.2)
+        ratioframe.GetXaxis().SetLabelSize(0.18)
         ratioframe.Draw()
 
         try:
