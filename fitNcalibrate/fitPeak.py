@@ -231,7 +231,7 @@ def main():
                    for j in range(0, dataSize):
                        temp.Fill(histo.GetRandom())
 		       
-		   ## method 2 (Gerrit): loop over bins and Poisson fluctuate all bin contents (but be careful about transformation, bin content is not number of events anymore) -> doesn't work yet
+		   ## method 2 (Gerrit): loop over bins and Poisson fluctuate all bin contents (but be careful about transformation, bin content is not number of events anymore)
                    #for bini in range(0, histo.GetNbinsX()+1):		   
                    #    bincontent = histo.GetBinContent(bini)
 		   #    ## the bin content was basically number of events divided by E, so first multiply again by E to get number of events
