@@ -31,8 +31,8 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     ## Set the function
     fitfunc = TF1("Gaussian fit", myFitFunc, minToFit, maxToFit, 3)
     ## Set normalization
-    fitfunc.SetParameter(2, h.Integral());
-    fitfunc.SetParLimits(2, 0.1*h.Integral(), 2.5*h.Integral());
+    fitfunc.SetParameter(0, h.Integral());
+    fitfunc.SetParLimits(0, 0.1*h.Integral(), 2.5*h.Integral());
     ## Set gaussian mean starting value and limits
     fitfunc.SetParameter(1, 4.2);
     fitfunc.SetParLimits(1, 4., 4.4);
@@ -176,7 +176,7 @@ def main():
            parser.add_option('-d', '--isData',  action = 'store_true',   dest='isData')
            parser.add_option('-i', '--inDir',   dest='inDir',   help='input directory',          default='nominal',    type='string')
            parser.add_option('-j', '--json',    dest='json',    help='json with list of files',  default="../analyzeNplot/data/samples_Run2015_25ns.json", type='string')
-           parser.add_option('-l', '--lumi',    dest='lumi' ,   help='lumi to print out',        default=2444.,        type=float)
+           parser.add_option('-l', '--lumi',    dest='lumi' ,   help='lumi to print out',        default=2214.,        type=float)
            (opt, args) = parser.parse_args()
            
            # Read list of MC samples

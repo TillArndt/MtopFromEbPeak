@@ -50,10 +50,10 @@ approximatively 20 minutes.
 
 The results are stored in Root files int the `nominal` subfolder. They can be plotted together and compared to data using
 ```
-python plotter.py -i nominal -j data/samples_Run2015_25ns.json  -l 2200.
+python plotter.py -i nominal -j data/samples_Run2015_25ns.json  -l 2214.
 ```
 Under `nominal/plots` you'll find a file called `plotter.root`, containing the histograms with the distributions
-normalized by integrated luminosity (2200 /pb,) together with `png` and `pdf` versions of the plots.
+normalized by integrated luminosity (2214 /pb,) together with `png` and `pdf` versions of the plots.
 
 The number of events selected from data and simulations can be obtained from
 ```
@@ -64,11 +64,11 @@ python getNumberOfEvents.py -i nominal -o table -j data/samples_Run2015_25ns.jso
 
 This step must be run in the `fitNcalibrate` folder. A python skeleton named `fitPeak.py` is provided. For MC, the usage is:
 ```
-python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.json" -l 2200.
+python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.json" -l 2214.
 ```
 while for data, it is:
 ```
-python fitPeak.py -i "nominal" -l 2200. -d
+python fitPeak.py -i "nominal" -l 2214. -d
 ```
 The argument following `-i` is the folder in which the `plotter.root` file has been previously produced. As previously, `-l` precedes the luminosity and `-j` the path for the json file. 
 
