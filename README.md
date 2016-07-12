@@ -33,7 +33,7 @@ This repository is organised in 4 parts:
 
 ## Browsing the content of a TFile
 
-The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
+The first step of the exercise consists in opening an input file stored in `/nfs/dust/cms/user/tarndt/CMS_DAS2016/Files_76/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
 
 _The input files have been produced thanks to a [setup](https://github.com/pfs/BJetEnergyPeak) kindly provided by P. Silva._
 
