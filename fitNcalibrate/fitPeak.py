@@ -178,7 +178,7 @@ def main():
            parser.add_option('-d', '--isData',  action = 'store_true',   dest='isData')
            parser.add_option('-i', '--inDir',   dest='inDir',   help='input directory',          default='nominal',    type='string')
            parser.add_option('-j', '--json',    dest='json',    help='json with list of files',  default="../analyzeNplot/data/samples_Run2015_25ns.json", type='string')
-           parser.add_option('-l', '--lumi',    dest='lumi' ,   help='lumi to print out',        default=2444.,        type=float)
+           parser.add_option('-l', '--lumi',    dest='lumi' ,   help='lumi to print out',        default=2214.,        type=float)
            (opt, args) = parser.parse_args()
            
            # Read list of MC samples
@@ -217,19 +217,31 @@ def main():
                os.mkdir(opt.inDir)
 
            # Draw pseudo-experiments for calibration (sample size is observed dataset size, hardcoded for now)
-           #dataSize = 14760
+           #dataSize = 13446
            Eb_histo = TH1F("Eb_histo","",100,62,72)
            DEb_histo = TH1F("DEb_histo","",100,0.2,1.2)
            if opt.isData is not True:
                random3 = TRandom3()
-               # Run 100 pseudo-experiments
+               # Run 1000 pseudo-experiments
                for i in range(0, 1000):
                    temp = TH1F("temp", "", 20, 3, 7)
 
-                   # Run over dataset size
-                   dataSize = random3.Poisson(14760)
+                   # method 1 (Kelly): run over dataset size and fill with values drawn from the histo
+                   dataSize = random3.Poisson(13446)
                    for j in range(0, dataSize):
                        temp.Fill(histo.GetRandom())
+		       
+		   ## method 2 (Gerrit): loop over bins and Poisson fluctuate all bin contents (but be careful about transformation, bin content is not number of events anymore) -> doesn't work yet
+                   #for bini in range(0, histo.GetNbinsX()+1):		   
+                   #    bincontent = histo.GetBinContent(bini)
+		   #    ## the bin content was basically number of events divided by E, so first multiply again by E to get number of events
+		   #    randombincontent_tmp = random3.Poisson(bincontent*math.exp(histo.GetBinCenter(bini))) 
+		   #    ## divide again by E to avoid distortion of the shape
+		   #    randombincontent =  randombincontent_tmp / math.exp( histo.GetBinCenter(bini) )
+		   #    randombinerror = math.sqrt(randombincontent_tmp) / math.exp( histo.GetBinCenter(bini) )
+		   #    #print "bin "+str(bini)+": bincontent = "+str(bincontent)+", randombincontent = "+str(randombincontent)+", randombinerror = "+str(randombinerror)
+		   #    temp.SetBinContent(bini,randombincontent)
+		   #    temp.SetBinError(bini,randombinerror)
 
                    Eb_temp,DEb_temp = gPeak(h=temp,inDir=opt.inDir,isData=opt.isData,lumi=opt.lumi)
                    print "iteration %i dataset size %i   <E_{b}> = (%3.2f #pm %3.2f) GeV" % (i, dataSize ,Eb_temp,DEb_temp)
@@ -242,9 +254,9 @@ def main():
                Eb_fitfunc = TF1("Eb Gaussian fit", myFitFunc, 62, 72, 3)
                Eb_fitfunc.SetParameter(0, 1000);
                #Eb_fitfunc.SetParLimits(0, 0.1*1000, 2.5*1000);
-               Eb_fitfunc.SetParameter(1, 67);
+               Eb_fitfunc.SetParameter(1, 66); #nominal 66
                #Eb_fitfunc.SetParLimits(1, 4., 4.4);
-               Eb_fitfunc.SetParameter(2, 1);
+               Eb_fitfunc.SetParameter(2, 1);  #nominal 1
                #Eb_fitfunc.SetParLimits(2, 0.35, 0.95);
                Eb_fitfunc.SetLineColor(kBlue)
                Eb_fitfunc.SetLineWidth(3)
@@ -257,9 +269,9 @@ def main():
                DEb_fitfunc = TF1("DEb Gaussian fit", myFitFunc, 0.2, 1.2, 3)
                DEb_fitfunc.SetParameter(0, 1000);
                #DEb_fitfunc.SetParLimits(0, 0.1*1000, 2.5*1000);
-               DEb_fitfunc.SetParameter(1, 0.8);
+               DEb_fitfunc.SetParameter(1, 0.9);   #nominal 0.8
                #DEb_fitfunc.SetParLimits(1, 4., 4.4);
-               DEb_fitfunc.SetParameter(2, 0.2);
+               DEb_fitfunc.SetParameter(2, 0.1);  #nominal 0.1
                #DEb_fitfunc.SetParLimits(2, 0.35, 0.95);
                DEb_fitfunc.SetLineColor(kBlue)
                DEb_fitfunc.SetLineWidth(3)
@@ -276,12 +288,12 @@ def main():
                cEb.cd()
                Eb_histo.Draw("ehist")
                Eb_fitfunc.Draw("same")
-               cEb.SaveAs("PE_Eb.pdf")
+               cEb.SaveAs(opt.inDir+"/PE_Eb.pdf")
                cDEb = TCanvas("PE canvas 2", "c1", 600, 600)
                cDEb.cd()
                DEb_histo.Draw("ehist")
                DEb_fitfunc.Draw("same")
-               cDEb.SaveAs("PE_DEb.pdf")
+               cDEb.SaveAs(opt.inDir+"/PE_DEb.pdf")
 
 
 

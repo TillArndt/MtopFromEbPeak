@@ -322,7 +322,7 @@ def main():
     parser.add_option(      '--silent',      dest='silent' ,     help='only dump to ROOT file',         default=False,   action='store_true')
     parser.add_option(      '--saveTeX',     dest='saveTeX' ,    help='save as tex file as well',       default=False,   action='store_true')
     parser.add_option(      '--rebin',       dest='rebin',       help='rebin factor',                   default=1,       type=int)
-    parser.add_option('-l', '--lumi',        dest='lumi' ,       help='lumi to print out',              default=41.6,    type=float)
+    parser.add_option('-l', '--lumi',        dest='lumi' ,       help='lumi to print out',              default=2214,    type=float)
     parser.add_option(      '--only',        dest='only',        help='plot only these (csv)',          default='',      type='string')
     (opt, args) = parser.parse_args()
 
