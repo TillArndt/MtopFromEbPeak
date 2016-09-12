@@ -2,6 +2,33 @@
 import math, ROOT, json, optparse, os, sys, pprint
 from ROOT import *
 
+def calibrate(meas=None):
+    #first get calibrated Eb from the calibration curve and the measured value                                                                                                                               
+    offset = 66.46
+    slope = 0.86
+    calibrated = (meas - offset)/slope + 67.57
+    m_W = 80.385
+    m_b = 4.18
+    m_t = calibrated + math.sqrt(m_W*m_W - m_b*m_b + calibrated*calibrated)
+    return m_t
+#    return calibrated
+
+def calibrateErr(meas=None,meas_err=None):
+    #first get calibrated Eb from the calibration curve and the measured value                                                                                                                               
+    offset = 66.46
+    slope = 0.86
+    calibrated = (meas - offset)/slope + 67.57
+    err = meas_err
+
+    m_w = 80.385
+    m_w_err = 0.015
+    m_b = 4.18
+    m_b_err = 0.03
+    temp = math.sqrt(m_w*m_w - m_b*m_b + calibrated*calibrated)
+    temp2 = (1 + calibrated/temp)*(1 + calibrated/temp)*err*err + (m_w/temp)*(m_w/temp)*m_w_err*m_w_err + (m_b/temp)*(m_b/temp)*m_b_err*m_b_err
+    m_top_err = math.sqrt(temp2)
+    return m_top_err
+
 def myFitFunc(x=None,par=None):
     return par[0]*TMath.Gaus(x[0],par[1],par[2],kFALSE)
 
@@ -220,6 +247,7 @@ def main():
            #dataSize = 14760
            Eb_histo = TH1F("Eb_histo","",100,62,72)
            DEb_histo = TH1F("DEb_histo","",100,0.2,1.2)
+           Pull_histo = TH1F("Pull_histo","",100,-3,3)
            if opt.isData is not True:
                random3 = TRandom3()
                # Run 100 pseudo-experiments
@@ -235,6 +263,7 @@ def main():
                    print "iteration %i dataset size %i   <E_{b}> = (%3.2f #pm %3.2f) GeV" % (i, dataSize ,Eb_temp,DEb_temp)
                    Eb_histo.Fill(Eb_temp)
                    DEb_histo.Fill(DEb_temp)
+                   Pull_histo.Fill((calibrate(Eb_temp) - 172.5)/calibrateErr(Eb_temp,DEb_temp))
                    del temp
                print "finished pseudo-experiments"
 
@@ -253,7 +282,6 @@ def main():
                mean_Eb = Eb_fitfunc.GetParameter(1)
                err_mean_Eb = Eb_fitfunc.GetParError(1)
 
-               
                DEb_fitfunc = TF1("DEb Gaussian fit", myFitFunc, 0.2, 1.2, 3)
                DEb_fitfunc.SetParameter(0, 1000);
                #DEb_fitfunc.SetParLimits(0, 0.1*1000, 2.5*1000);
@@ -268,8 +296,27 @@ def main():
                mean_DEb = DEb_fitfunc.GetParameter(1)
                err_mean_DEb = DEb_fitfunc.GetParError(1)
 
+               Pull_fitfunc = TF1("Pull Gaussian fit", myFitFunc, -3, 3, 3)
+               Pull_fitfunc.SetParameter(0, 1000);
+               #Pull_fitfunc.SetParLimits(0, 0.1*1000, 2.5*1000);
+               Pull_fitfunc.SetParameter(1, 0);
+               #Pull_fitfunc.SetParLimits(1, 4., 4.4);
+               Pull_fitfunc.SetParameter(2, 1);
+               #Pull_fitfunc.SetParLimits(2, 0.35, 0.95);
+               Pull_fitfunc.SetLineColor(kBlue)
+               Pull_fitfunc.SetLineWidth(3)
+               Pull_fitfunc.SetLineStyle(1)
+               Pull_histo.Rebin(4)
+               Pull_histo.Fit("Pull Gaussian fit","EMQ", "", -3, 3)           
+               mean_Pull = Pull_fitfunc.GetParameter(1)
+               mean_Pull_err = Pull_fitfunc.GetParError(1)
+               rms_Pull = Pull_fitfunc.GetParameter(2)
+               rms_Pull_err = Pull_fitfunc.GetParError(2)
+
                print "PE <E_{b}> = (%3.2f #pm %3.2f) GeV" % (mean_Eb,err_mean_Eb)
                print "PE <#delta E_{b}> = (%3.4f #pm %3.4f) GeV" % (mean_DEb,err_mean_DEb)
+               print "Pull mean = (%3.4f #pm %3.4f)" % (mean_Pull,mean_Pull_err)
+               print "Pull RMS = (%3.4f #pm %3.4f)" % (rms_Pull,rms_Pull_err)
 
                #draw results of pseudo-experiments
                cEb = TCanvas("PE canvas 1", "c1", 600, 600)
@@ -282,6 +329,11 @@ def main():
                DEb_histo.Draw("ehist")
                DEb_fitfunc.Draw("same")
                cDEb.SaveAs("PE_DEb.pdf")
+               cPull = TCanvas("Pull canvas 3", "c1", 600, 600)
+               cPull.cd()
+               Pull_histo.Draw("ehist")
+               Pull_fitfunc.Draw("same")
+               cPull.SaveAs("Pull.pdf")
 
 
 

@@ -68,7 +68,8 @@ def setupCalibrationCurve():
 def main():
 
     offset,slope,offset_err,slope_err = setupCalibrationCurve()
-    calibrate(offset,slope,offset_err,slope_err, x)
+    #test
+    calibrate(offset,slope,offset_err,slope_err, 67.02)
 
 if __name__ == "__main__":
     sys.exit(main())
