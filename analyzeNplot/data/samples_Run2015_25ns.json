@@ -1,6 +1,6 @@
 {
 
-"MC13TeV_TTJets"  : [ 
+"MC13TeV_TTJets_powheg_pythia8"  : [ 
 		 831.76, 
 		 0, 
 		 "/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2_ext3-v1/MINIAODSIM", 
@@ -16,13 +16,6 @@
 		  797
 ],
 
-"MC13TeV_TTZToQQ" : [ 
-		  0.5297, 
-		  0, 
-		  "/TTZToQQ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
-		  "t#bar{t}+V", 
-		  797
-],
 
 "MC13TeV_WZ" : [
 	     65.9,      
@@ -72,22 +65,6 @@
 		     618
 ],
 
-"MC13TeV_SingleT_t" : [
-		    44.07,
-		    0, 
-		    "/ST_t-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
-			  "Single top",  
-		    618
-],
-
-"MC13TeV_SingleTbar_t" : [
-		       26.22,      
-		       0, 
-		       "/ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
-			     "Single top",  
-		       618
-],
-
 "MC13TeV_DY10to50" : [
 		   18610.0,      
 		   0, 
@@ -104,7 +81,7 @@
 		    868
 ],
 
-"Data13TeV_MuonEG_2015D_05Oct" : [
+"Data13TeV_MuonEG_2015C" : [
 			    1, 
 			    1, 
 			    "/MuonEG/Run2015D-05Oct-v2/MINIAOD", 
@@ -112,7 +89,7 @@
 			    1
 ],
 
-"Data13TeV_MuonEG_2015D_v4" : [
+"Data13TeV_MuonEG_2015D" : [
 			    1, 
 			    1, 
 			    "/MuonEG/Run2015D-PromptReco-v4/MINIAOD", 
