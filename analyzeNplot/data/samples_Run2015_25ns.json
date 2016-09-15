@@ -16,6 +16,13 @@
 		  797
 ],
 
+"MC13TeV_TTZToLLNuNu" : [
+		    0.2529,      
+		    0, 
+		    "/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
+		    "t#bar{t}+V", 
+		    797
+],
 
 "MC13TeV_WZ" : [
 	     65.9,      
@@ -80,6 +87,7 @@
 		    "DY", 
 		    868
 ],
+
 
 "Data13TeV_MuonEG_2015C" : [
 			    1, 
