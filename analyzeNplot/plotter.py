@@ -294,17 +294,18 @@ def convertToPoissonErrorGr(h):
     #check https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars
     alpha = 1 - 0.6827;
     grpois = ROOT.TGraphAsymmErrors(h);
-    for i in xrange(0,grpois.GetN()+1) :
-        N = grpois.GetY()[i]
-        if N<200 :
-            L = 0
-            if N>0 : L = ROOT.Math.gamma_quantile(alpha/2,N,1.)
-            U = ROOT.Math.gamma_quantile_c(alpha/2,N+1,1)
-            grpois.SetPointEYlow(i, N-L)
-            grpois.SetPointEYhigh(i, U-N)
-        else:
-            grpois.SetPointEYlow(i, math.sqrt(N))
-            grpois.SetPointEYhigh(i,math.sqrt(N))
+    #tarndt 2016
+    #for i in xrange(0,grpois.GetN()+1) :
+    #    N = grpois.GetY()[i]
+    #    if N<200 :
+    #        L = 0
+    #        if N>0 : L = ROOT.Math.gamma_quantile(alpha/2,N,1.)
+    #        U = ROOT.Math.gamma_quantile_c(alpha/2,N+1,1)
+    #        grpois.SetPointEYlow(i, N-L)
+    #        grpois.SetPointEYhigh(i, U-N)
+   #     else:
+   #         grpois.SetPointEYlow(i, math.sqrt(N))
+   #         grpois.SetPointEYhigh(i,math.sqrt(N))
     return grpois
 
 
