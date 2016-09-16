@@ -3,7 +3,7 @@
 "MC13TeV_TTJets_powheg_pythia8"  : [ 
 		 831.76, 
 		 0, 
-		 "/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2_ext3-v1/MINIAODSIM", 
+		 "/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext3-v1/MINIAODSIM", 
 		 "t#bar{t}",          
 		 633
 ],
@@ -11,7 +11,7 @@
 "MC13TeV_TTWJets" : [
 		  0.2043, 
 		  0, 
-		  "/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+		  "/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 		  "t#bar{t}+V", 
 		  797
 ],
@@ -27,7 +27,7 @@
 "MC13TeV_WZ" : [
 	     47.1,      
 	     0, 
-	     "/WZJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+	     "/WZ_TuneCUETP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 	     "Diboson",        
 	     400
 ],
@@ -35,7 +35,7 @@
 "MC13TeV_WWTo2L2Nu" : [
 		    11.6,      
 		    0, 
-		    "/WWTo2L2Nu_13TeV-powheg/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+		    "/WWTo2L2Nu_13TeV-powheg/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 		    "Diboson",        
 		    400
 ],
@@ -43,7 +43,7 @@
 "MC13TeV_ZZ" : [
 	     16.5,      
 	     0, 
-	     "/ZZ_TuneCUETP8M1_13TeV-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+	     "/ZZ_TuneCUETP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 	     "Diboson",        
 	     400
 ],
@@ -51,7 +51,7 @@
 "MC13TeV_WJets" : [
 		61526.7, 
 		0, 
-		"/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+		"/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 		"W", 
 		858
 ],
@@ -59,7 +59,7 @@
 "MC13TeV_SingleTbar_tW" : [
 			35.85,      
 			0, 
-			"/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+			"/ST_tW_antitop_5f_DS_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 			"Single top",  
 			618
 ],
@@ -67,7 +67,7 @@
 "MC13TeV_SingleT_tW" : [
 		     35.85,
 		     0, 
-		     "/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v2/MINIAODSIM", 
+		     "/ST_tW_top_5f_DS_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v2/MINIAODSIM", 
 			   "Single top",  
 		     618
 ],
@@ -75,7 +75,7 @@
 "MC13TeV_DY10to50" : [
 		   18610.0,      
 		   0, 
-		   "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+		   "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 		   "DY",  
 		   868
 ],
@@ -83,7 +83,7 @@
 "MC13TeV_DY50toInf" : [
 		    6025.0,      
 		    0, 
-		    "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
+		    "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
 		    "DY", 
 		    868
 ],
@@ -92,7 +92,7 @@
 "Data13TeV_MuonEG_2015C" : [
 			    1, 
 			    1, 
-			    "/MuonEG/Run2015D-05Oct-v2/MINIAOD", 
+			    "/MuonEG/Run2015C_25ns-16Dec2015-v1/MINIAOD", 
 			    "Data", 
 			    1
 ],
@@ -100,7 +100,7 @@
 "Data13TeV_MuonEG_2015D" : [
 			    1, 
 			    1, 
-			    "/MuonEG/Run2015D-PromptReco-v4/MINIAOD", 
+			    "/MuonEG/Run2015D-16Dec2015-v1/MINIAOD", 
 			    "Data", 
 			    1
 ]
