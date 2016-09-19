@@ -14,7 +14,7 @@
 "MC13TeV_SingleT_tW_mtop1695":                    [32.65,    0, "/ST_tW_top_5f_mtop1695_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", "tW m=169.5",          618, true, false, 1],
 "MC13TeV_SingleT_tW_mtop1755":                 [39.29,    0, "/ST_tW_top_5f_mtop1755_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v2/MINIAODSIM", "tW m=175.5",          618, true, false, 1],
 "MC13TeV_SingleTbar_tW_mtop1695":                    [32.65,    0, "/ST_tW_antitop_5f_mtop1695_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", "tW m=169.5",          618, true, false, 1],
-"MC13TeV_SingleTbar_tW_mtop1755":                 [39.29,    0, "/ST_tW_antitop_5f_mtop1755_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", "tW m=175.5",          618, true, false, 1],
+"MC13TeV_SingleTbar_tW_mtop1755":                 [39.29,    0, "/ST_tW_antitop_5f_mtop1755_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", "tW m=175.5",          618, true, false, 1]
 
 }
 
