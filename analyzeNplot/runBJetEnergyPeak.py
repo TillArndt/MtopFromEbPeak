@@ -45,17 +45,9 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #require at least two jets
         nJets, nBtags = 0, 0
         taggedJetsP4=[]
+        
+        #BTagEffs
         for ij in xrange(0,tree.nJet):
-
-            #get the kinematics and select the jet
-            jp4=ROOT.TLorentzVector()
-            jp4.SetPtEtaPhiM(tree.Jet_pt[ij],tree.Jet_eta[ij],tree.Jet_phi[ij],tree.Jet_mass[ij])
-            if jp4.Pt()<30 or ROOT.TMath.Abs(jp4.Eta())>2.4 : continue
-
-            #count selected jet
-            nJets +=1
-
-            #BJet weights
             bwgt_mc = 1.
             bwgt_data= 1.
             if tree.nGenWeight>0 :
@@ -79,7 +71,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                         bwgt_data *= l_sf
                         bwgt_data*= l_eff
                         bwgt_mc *= l_eff
-                else :            
+                else :
                     if abs(tree.Jet_flavour[ij]) ==5:
                         bwgt_data *=(1- (b_sf*b_eff))
                         bwgt_mc *=(1-b_eff)
@@ -90,7 +82,17 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                         bwgt_data *=(1-(l_sf*l_eff))
                         bwgt_mc *=(1- l_eff)
 
+        
 
+        for ij in xrange(0,tree.nJet):
+
+            #get the kinematics and select the jet
+            jp4=ROOT.TLorentzVector()
+            jp4.SetPtEtaPhiM(tree.Jet_pt[ij],tree.Jet_eta[ij],tree.Jet_phi[ij],tree.Jet_mass[ij])
+            if jp4.Pt()<30 or ROOT.TMath.Abs(jp4.Eta())>2.4 : continue
+
+            #count selected jet
+            nJets +=1
 
             #save P4 for b-tagged jet
             if tree.Jet_CombIVF[ij]>0.460:
