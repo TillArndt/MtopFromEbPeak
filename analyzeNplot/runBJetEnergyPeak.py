@@ -78,13 +78,13 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             if tree.nGenWeight>0 :
                 if abs(tree.Jet_flavour[ij]) ==5:
                     bevtWgt *=reader.eval(0, tree.Jet_eta[ij], tree.Jet_pt[ij])
-                    bevtWgt *=(1./btagEffs['b']['loose'].Eval(tree.Jet_pt[ij]))
+                    bevtWgt *=btagEffs['b']['loose'].Eval(tree.Jet_pt[ij])
                 elif abs(tree.Jet_flavour[ij]) ==4:
                     bevtWgt *=reader.eval(1, tree.Jet_eta[ij], tree.Jet_pt[ij])
-                    bevtWgt *=(1./btagEffs['c']['loose'].Eval(tree.Jet_pt[ij]))
+                    bevtWgt *=btagEffs['c']['loose'].Eval(tree.Jet_pt[ij])
                 else:
                     bevtWgt *=reader.eval(2, tree.Jet_eta[ij], tree.Jet_pt[ij])
-                    bevtWgt *=(1./btagEffs['udsg']['loose'].Eval(tree.Jet_pt[ij]))
+                    bevtWgt *=btagEffs['udsg']['loose'].Eval(tree.Jet_pt[ij])
             histos['bjeten'].Fill(taggedJetsP4[ij].E(),bevtWgt)
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),bevtWgt/taggedJetsP4[ij].E())
         
