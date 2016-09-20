@@ -14,6 +14,15 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     print '...analysing %s' % inFileURL
 
+    #load btag effs
+    cachefile = open('%s/src/UserCode/MtopFromEbPeak/analyzeNplot/data/btagefficiencies.pck' % os.environ['CMSSW_BASE'], 'r')
+    btagEffs = pickle.load(cachefile)
+    cachefile.close()
+
+
+    ROOT.gSystem.Load('libCondFormatsBTauObjects') 
+    calib = ROOT.BTagCalibration("CSVv2", "CSVv2.csv")
+    reader = ROOT.BTagCalibrationReader(calib,0,"incl","central")  # 0 is for loose op , central is for the systematic
     #book some histograms
     histos={ 
         'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
@@ -65,8 +74,19 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
-            histos['bjeten'].Fill(taggedJetsP4[ij].E(),evWgt)
-            histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+            bevtWgt = evWgt
+            if tree.nGenWeight>0 :
+                if abs(tree.Jet_flavour[ij]) ==5:
+                    bevtWgt *=reader.eval(0, tree.Jet_eta[ij], tree.Jet_pt[ij])
+                    bevtWgt *=(1./btagEffs['b']['loose'].Eval(tree.Jet_pt[ij]))
+                elif abs(tree.Jet_flavour[ij]) ==4:
+                    bevtWgt *=reader.eval(1, tree.Jet_eta[ij], tree.Jet_pt[ij])
+                    bevtWgt *=(1./btagEffs['c']['loose'].Eval(tree.Jet_pt[ij]))
+                else:
+                    bevtWgt *=reader.eval(2, tree.Jet_eta[ij], tree.Jet_pt[ij])
+                    bevtWgt *=(1./btagEffs['udsg']['loose'].Eval(tree.Jet_pt[ij]))
+            histos['bjeten'].Fill(taggedJetsP4[ij].E(),bevtWgt)
+            histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),bevtWgt/taggedJetsP4[ij].E())
         
     #all done with this file
     fIn.Close()
@@ -115,7 +135,7 @@ def main():
     #prepare output
     if len(opt.outDir)==0    : opt.outDir='./'
     os.system('mkdir -p %s' % opt.outDir)
-        
+     
     #create the analysis jobs
     taskList = []
     for sample, sampleInfo in samplesList: 
