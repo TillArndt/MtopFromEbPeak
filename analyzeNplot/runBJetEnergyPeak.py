@@ -34,6 +34,13 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         histos[key].Sumw2()
         histos[key].SetDirectory(0)
 
+    #All the btag WPs
+    btag_WP={
+        'loose':0.460,    
+        'medium':0.800, 
+        'tight':0.935
+        }
+
     #open file and loop over events tree
     fIn=ROOT.TFile.Open(inFileURL)
     tree=fIn.Get('data')
@@ -45,11 +52,11 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #require at least two jets
         nJets, nBtags = 0, 0
         taggedJetsP4=[]
-        
+        bwgt_mc = 1.
+        bwgt_data= 1.
+ 
         #BTagEffs
         for ij in xrange(0,tree.nJet):
-            bwgt_mc = 1.
-            bwgt_data= 1.
             if tree.nGenWeight>0 :
                 b_sf = reader.eval(0, tree.Jet_eta[ij], tree.Jet_pt[ij])
                 c_sf = reader.eval(1, tree.Jet_eta[ij], tree.Jet_pt[ij])
