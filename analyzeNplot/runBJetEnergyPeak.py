@@ -19,10 +19,24 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     btagEffs = pickle.load(cachefile)
     cachefile.close()
 
+    #All the btag WPs
+    all_btag={
+        'loose':0.460,
+        'medium':0.800,
+        'tight':0.935
+        }
+    # The working point you want to use
+    btag_wp= 'loose'
 
+    #Readout Btag Scale Factors
     ROOT.gSystem.Load('libCondFormatsBTauObjects') 
     calib = ROOT.BTagCalibration("CSVv2", "CSVv2.csv")
-    reader = ROOT.BTagCalibrationReader(calib,0,"incl","central")  # 0 is for loose op , central is for the systematic
+    temp = 0
+    if btag_wp== 'medium': temp=1
+    elif btag_wp== 'tight': temp=2
+    reader = ROOT.BTagCalibrationReader(calib,temp,"incl","central")  # central is for the systematic
+
+
     #book some histograms
     histos={ 
         'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
@@ -33,14 +47,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     for key in histos:
         histos[key].Sumw2()
         histos[key].SetDirectory(0)
-
-    #All the btag WPs
-    btag_WP={
-        'loose':0.460,    
-        'medium':0.800, 
-        'tight':0.935
-        }
-
+    
     #open file and loop over events tree
     fIn=ROOT.TFile.Open(inFileURL)
     tree=fIn.Get('data')
@@ -61,11 +68,11 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                 b_sf = reader.eval(0, tree.Jet_eta[ij], tree.Jet_pt[ij])
                 c_sf = reader.eval(1, tree.Jet_eta[ij], tree.Jet_pt[ij])
                 l_sf = reader.eval(2, tree.Jet_eta[ij], tree.Jet_pt[ij])
-                b_eff = btagEffs['b']['loose'].Eval(tree.Jet_pt[ij])
-                c_eff = btagEffs['c']['loose'].Eval(tree.Jet_pt[ij])
-                l_eff = btagEffs['udsg']['loose'].Eval(tree.Jet_pt[ij])
+                b_eff = btagEffs['b'][btag_wp].Eval(tree.Jet_pt[ij])
+                c_eff = btagEffs['c'][btag_wp].Eval(tree.Jet_pt[ij])
+                l_eff = btagEffs['udsg'][btag_wp].Eval(tree.Jet_pt[ij])
 
-                if  tree.Jet_CombIVF[ij]>0.460:
+                if  tree.Jet_CombIVF[ij]>all_btag[btag_wp]:
                     if abs(tree.Jet_flavour[ij]) ==5:
                         bwgt_data *=b_sf
                         bwgt_data*= b_eff
@@ -102,7 +109,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             nJets +=1
 
             #save P4 for b-tagged jet
-            if tree.Jet_CombIVF[ij]>0.460:
+            if tree.Jet_CombIVF[ij]>all_btag[btag_wp]:
                 nBtags+=1
                 taggedJetsP4.append(jp4)
         
