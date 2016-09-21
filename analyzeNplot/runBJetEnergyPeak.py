@@ -15,9 +15,9 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     print '...analysing %s' % inFileURL
 
     #load btag effs
-    cachefile = open('%s/src/UserCode/MtopFromEbPeak/analyzeNplot/data/btagefficiencies.pck' % os.environ['CMSSW_BASE'], 'r')
-    btagEffs = pickle.load(cachefile)
-    cachefile.close()
+    #cachefile = open('%s/src/UserCode/MtopFromEbPeak/analyzeNplot/data/btagefficiencies.pck' % os.environ['CMSSW_BASE'], 'r')
+    #btagEffs = pickle.load(cachefile)
+    #cachefile.close()
 
     #All the btag WPs
     all_btag={
@@ -29,12 +29,12 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     btag_wp= 'loose'
 
     #Readout Btag Scale Factors
-    ROOT.gSystem.Load('libCondFormatsBTauObjects') 
-    calib = ROOT.BTagCalibration("CSVv2", "CSVv2.csv")
-    temp = 0
-    if btag_wp== 'medium': temp=1
-    elif btag_wp== 'tight': temp=2
-    reader = ROOT.BTagCalibrationReader(calib,temp,"incl","central")  # central is for the systematic
+    #ROOT.gSystem.Load('libCondFormatsBTauObjects') 
+    #calib = ROOT.BTagCalibration("CSVv2", "CSVv2.csv")
+    #temp = 0
+    #if btag_wp== 'medium': temp=1
+    #elif btag_wp== 'tight': temp=2
+    #reader = ROOT.BTagCalibrationReader(calib,temp,"incl","central")  # central is for the systematic
 
 
     #book some histograms
@@ -63,38 +63,38 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         bwgt_data= 1.
  
         #BTagEffs
-        for ij in xrange(0,tree.nJet):
-            if tree.nGenWeight>0 :
-                b_sf = reader.eval(0, tree.Jet_eta[ij], tree.Jet_pt[ij])
-                c_sf = reader.eval(1, tree.Jet_eta[ij], tree.Jet_pt[ij])
-                l_sf = reader.eval(2, tree.Jet_eta[ij], tree.Jet_pt[ij])
-                b_eff = btagEffs['b'][btag_wp].Eval(tree.Jet_pt[ij])
-                c_eff = btagEffs['c'][btag_wp].Eval(tree.Jet_pt[ij])
-                l_eff = btagEffs['udsg'][btag_wp].Eval(tree.Jet_pt[ij])
+       # for ij in xrange(0,tree.nJet):
+       #     if tree.nGenWeight>0 :
+       #         b_sf = reader.eval(0, tree.Jet_eta[ij], tree.Jet_pt[ij])
+       #         c_sf = reader.eval(1, tree.Jet_eta[ij], tree.Jet_pt[ij])
+       ##         l_sf = reader.eval(2, tree.Jet_eta[ij], tree.Jet_pt[ij])
+       #         b_eff = btagEffs['b'][btag_wp].Eval(tree.Jet_pt[ij])
+       #         c_eff = btagEffs['c'][btag_wp].Eval(tree.Jet_pt[ij])
+       #         l_eff = btagEffs['udsg'][btag_wp].Eval(tree.Jet_pt[ij])
 
-                if  tree.Jet_CombIVF[ij]>all_btag[btag_wp]:
-                    if abs(tree.Jet_flavour[ij]) ==5:
-                        bwgt_data *=b_sf
-                        bwgt_data*= b_eff
-                        bwgt_mc *= b_eff
-                    elif abs(tree.Jet_flavour[ij]) ==4:
-                        bwgt_data *= c_sf
-                        bwgt_data*= c_eff
-                        bwgt_mc *= c_eff
-                    else:
-                        bwgt_data *= l_sf
-                        bwgt_data*= l_eff
-                        bwgt_mc *= l_eff
-                else :
-                    if abs(tree.Jet_flavour[ij]) ==5:
-                        bwgt_data *=(1- (b_sf*b_eff))
-                        bwgt_mc *=(1-b_eff)
-                    elif abs(tree.Jet_flavour[ij]) ==4:
-                        bwgt_data *=(1-(c_sf*c_eff))
-                        bwgt_mc *=(1-c_eff)
-                    else:
-                        bwgt_data *=(1-(l_sf*l_eff))
-                        bwgt_mc *=(1- l_eff)
+        #        if  tree.Jet_CombIVF[ij]>all_btag[btag_wp]:
+        #            if abs(tree.Jet_flavour[ij]) ==5:
+        #                bwgt_data *=b_sf
+        #                bwgt_data*= b_eff
+        #                bwgt_mc *= b_eff
+        #            elif abs(tree.Jet_flavour[ij]) ==4:
+        #                bwgt_data *= c_sf
+        #                bwgt_data*= c_eff
+        #                bwgt_mc *= c_eff
+        #            else:
+        #                bwgt_data *= l_sf
+        #                bwgt_data*= l_eff
+        #                bwgt_mc *= l_eff
+        #        else :
+        #            if abs(tree.Jet_flavour[ij]) ==5:
+        #                bwgt_data *=(1- (b_sf*b_eff))
+        #                bwgt_mc *=(1-b_eff)
+        #            elif abs(tree.Jet_flavour[ij]) ==4:
+        #                bwgt_data *=(1-(c_sf*c_eff))
+        #                bwgt_mc *=(1-c_eff)
+        #            else:
+        #                bwgt_data *=(1-(l_sf*l_eff))
+        #                bwgt_mc *=(1- l_eff)
 
         
 
@@ -128,7 +128,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
-            bevtWgt = bwgt_data/bwgt_mc
+            bevtWgt = tree.bWgt
             bevtWgt*=evWgt
             histos['bjeten'].Fill(taggedJetsP4[ij].E(),bevtWgt)
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),bevtWgt/taggedJetsP4[ij].E())
