@@ -14,6 +14,15 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     print '...analysing %s' % inFileURL
 
+    #load btag effs
+    cachefile = open('%s/src/UserCode/MtopFromEbPeak/analyzeNplot/data/btagefficiencies.pck' % os.environ['CMSSW_BASE'], 'r')
+    btagEffs = pickle.load(cachefile)
+    cachefile.close()
+
+
+    ROOT.gSystem.Load('libCondFormatsBTauObjects') 
+    calib = ROOT.BTagCalibration("CSVv2", "CSVv2.csv")
+    reader = ROOT.BTagCalibrationReader(calib,0,"incl","central")  # 0 is for loose op , central is for the systematic
     #book some histograms
     histos={ 
         'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
@@ -36,6 +45,46 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #require at least two jets
         nJets, nBtags = 0, 0
         taggedJetsP4=[]
+        
+        bwgt_mc = 1.
+        bwgt_data= 1.
+
+        #BTagEffs
+        for ij in xrange(0,tree.nJet):
+            if tree.nGenWeight>0 :
+                b_sf = reader.eval(0, tree.Jet_eta[ij], tree.Jet_pt[ij])
+                c_sf = reader.eval(1, tree.Jet_eta[ij], tree.Jet_pt[ij])
+                l_sf = reader.eval(2, tree.Jet_eta[ij], tree.Jet_pt[ij])
+                b_eff = btagEffs['b']['loose'].Eval(tree.Jet_pt[ij])
+                c_eff = btagEffs['c']['loose'].Eval(tree.Jet_pt[ij])
+                l_eff = btagEffs['udsg']['loose'].Eval(tree.Jet_pt[ij])
+
+                if  tree.Jet_CombIVF[ij]>0.460:
+                    if abs(tree.Jet_flavour[ij]) ==5:
+                        bwgt_data *=b_sf
+                        bwgt_data*= b_eff
+                        bwgt_mc *= b_eff
+                    elif abs(tree.Jet_flavour[ij]) ==4:
+                        bwgt_data *= c_sf
+                        bwgt_data*= c_eff
+                        bwgt_mc *= c_eff
+                    else:
+                        bwgt_data *= l_sf
+                        bwgt_data*= l_eff
+                        bwgt_mc *= l_eff
+                else :
+                    if abs(tree.Jet_flavour[ij]) ==5:
+                        bwgt_data *=(1- (b_sf*b_eff))
+                        bwgt_mc *=(1-b_eff)
+                    elif abs(tree.Jet_flavour[ij]) ==4:
+                        bwgt_data *=(1-(c_sf*c_eff))
+                        bwgt_mc *=(1-c_eff)
+                    else:
+                        bwgt_data *=(1-(l_sf*l_eff))
+                        bwgt_mc *=(1- l_eff)
+
+        
+
         for ij in xrange(0,tree.nJet):
 
             #get the kinematics and select the jet
@@ -62,11 +111,14 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         histos['nvtx'].Fill(tree.nPV,evWgt)
         histos['nbtags'].Fill(nBtags,evWgt)
 
+
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
-            histos['bjeten'].Fill(taggedJetsP4[ij].E(),evWgt)
-            histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+            bevtWgt = bwgt_data/bwgt_mc
+            bevtWgt*=evWgt
+            histos['bjeten'].Fill(taggedJetsP4[ij].E(),bevtWgt)
+            histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),bevtWgt/taggedJetsP4[ij].E())
         
     #all done with this file
     fIn.Close()
@@ -115,7 +167,7 @@ def main():
     #prepare output
     if len(opt.outDir)==0    : opt.outDir='./'
     os.system('mkdir -p %s' % opt.outDir)
-        
+     
     #create the analysis jobs
     taskList = []
     for sample, sampleInfo in samplesList: 
