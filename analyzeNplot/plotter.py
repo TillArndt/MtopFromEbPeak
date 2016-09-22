@@ -39,6 +39,25 @@ class Plot(object):
                 self._garbageList.append(h)
         else:
             try:
+            #print "title = %s" % ( title )
+                if title.find("t#bar{t} m=166.5") != -1:
+                    print "correcting m=166.5"
+                    h.Scale(1.26)
+                if title.find("t#bar{t} m=169.5") != -1:
+                    print "correcting m=169.5"
+                    h.Scale(1.12)
+                if title.find("t#bar{t} m=171.5") != -1:
+                    print "correcting m=171.5"
+        	    h.Scale(1.04)
+                if title.find("t#bar{t} m=173.5") != -1:
+                    print "correcting m=173.5"
+                    h.Scale(0.96)
+                if title.find("t#bar{t} m=175.5") != -1:
+                    print "correcting m=175.5"
+                    h.Scale(0.90)
+                if title.find("t#bar{t} m=178.5") != -1:
+                    print "correcting m=178.5"
+                    h.Scale(0.8)
                 self.mc[title].Add(h)
             except:
                 self.mc[title]=h
